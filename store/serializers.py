@@ -24,11 +24,6 @@ class ClienteSerializer(serializers.ModelSerializer):
       fields = '__all__'
 
 
-class FacturaSerializer(serializers.ModelSerializer):
-   class Meta:
-      model = Factura
-      fields = '__all__'
-
 class ModoPagoSerializer(serializers.ModelSerializer):
    class Meta:
       model = ModoPago
@@ -39,6 +34,12 @@ class DetalleSerializer(serializers.ModelSerializer):
    class Meta:
       model = Detalle
       fields = '__all__'
+
+class FacturaSerializer(serializers.ModelSerializer):
+   productos = ProductoSerializer(many=True, read_only=True)
+   class Meta:
+      model = Factura
+      fields = ['num_factura', 'fecha', 'cliente', 'modo_pago', 'productos']
 
 
 class LoginSerializer(serializers.Serializer):
