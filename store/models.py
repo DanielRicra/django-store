@@ -12,12 +12,6 @@ class ModoPago(models.Model):
    descripcion = models.TextField()
 
 
-class Factura(models.Model):
-   num_factura = models.AutoField(primary_key=True)
-   fecha = models.DateTimeField(auto_now_add=True)
-   cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
-   modo_pago = models.ForeignKey(ModoPago, on_delete=models.SET_NULL, null=True)
-
 class Categoria(models.Model):
    nombre = models.CharField(max_length=150)
    descripcion = models.TextField()
@@ -27,6 +21,14 @@ class Producto(models.Model):
    precio = models.DecimalField(max_digits=8, decimal_places=2)
    stock = models.IntegerField()
    categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
+
+
+class Factura(models.Model):
+   num_factura = models.AutoField(primary_key=True)
+   fecha = models.DateTimeField(auto_now_add=True)
+   cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)
+   modo_pago = models.ForeignKey(ModoPago, on_delete=models.SET_NULL, null=True)
+   productos = models.ManyToManyField(Producto, through='Detalle')
 
 
 class Detalle(models.Model):
