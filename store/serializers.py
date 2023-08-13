@@ -39,3 +39,8 @@ class DetalleSerializer(serializers.ModelSerializer):
    class Meta:
       model = Detalle
       fields = '__all__'
+
+
+class LoginSerializer(serializers.Serializer):
+   email = serializers.CharField()
+   password = serializers.CharField()
