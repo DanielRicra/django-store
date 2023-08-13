@@ -2,7 +2,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import LoginSerializer
 from rest_framework.response import Response
-from .models import Cliente
+from .models import Cliente, Factura
+from .serializers import FacturaSerializer
 
 class LoginView(APIView):
    def post(self, request):
@@ -19,3 +20,15 @@ class LoginView(APIView):
          except Cliente.DoesNotExist:
             return Response({'message': 'Cliente con no existe, check your email'}, status=status.HTTP_404_NOT_FOUND)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ClientFacturasView(APIView):
+   def get(self, request, cliente_id):
+      try:
+         Cliente.objects.get(id=cliente_id)
+      except Cliente.DoesNotExist:
+         return Response({'message': 'Cliente no existe'}, status=status.HTTP_404_NOT_FOUND)
+      
+      facturas = Factura.objects.filter(cliente_id=cliente_id)
+      serializer = FacturaSerializer(facturas, many=True)
+      return Response(serializer.data)
