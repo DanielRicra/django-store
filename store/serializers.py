@@ -31,16 +31,21 @@ class ModoPagoSerializer(serializers.ModelSerializer):
 
 
 class DetalleSerializer(serializers.ModelSerializer):
+   producto = ProductoSerializer(read_only=True)
    class Meta:
       model = Detalle
-      fields = '__all__'
+      fields = ['cantidad', 'total', 'producto']
 
 class FacturaSerializer(serializers.ModelSerializer):
-   productos = ProductoSerializer(many=True, read_only=True)
+   productos = serializers.SerializerMethodField('get_productos')
    class Meta:
       model = Factura
       fields = ['num_factura', 'fecha', 'cliente', 'modo_pago', 'productos']
 
+   def get_productos(self, obj):
+      detalles = Detalle.objects.filter(factura=obj.num_factura)
+      producto_data = DetalleSerializer(detalles, many=True).data
+      return producto_data
 
 class LoginSerializer(serializers.Serializer):
    email = serializers.CharField()

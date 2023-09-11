@@ -18,7 +18,7 @@ class LoginView(APIView):
             
             return Response({ 'id': client.id, 'email': client.email, 'nombre': client.nombre, 'apellido': client.apellido })
          except Cliente.DoesNotExist:
-            return Response({'message': 'Cliente con no existe, check your email'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'Cliente  no existe, check your email'}, status=status.HTTP_404_NOT_FOUND)
       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
