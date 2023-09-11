@@ -5,6 +5,7 @@ class Cliente(models.Model):
    apellido = models.CharField(max_length=100)
    email = models.EmailField(max_length=200)
    password = models.CharField(max_length=100)
+   telefono=models.CharField(max_length=30)
    dni = models.CharField(max_length=8, null=True, unique=True)
 
 class ModoPago(models.Model):
